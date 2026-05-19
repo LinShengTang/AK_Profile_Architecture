@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>AK Profile Architecture Manual｜主頁防漏 / Bio / 置頂三件套</title>
+<style>
+:root{
+  --ink:#172033;
+  --muted:#64748b;
+  --line:#d6e0ee;
+  --blue:#2563eb;
+  --cyan:#0891b2;
+  --green:#15803d;
+  --amber:#b45309;
+  --red:#b91c1c;
+  --purple:#7c3aed;
+  --shadow:0 18px 48px rgba(15,23,42,.16);
+  --radius:20px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  font-family:"Noto Sans TC","Microsoft JhengHei",system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  color:var(--ink);
+  background:
+    radial-gradient(circle at 6% 0%,rgba(37,99,235,.22),transparent 28%),
+    radial-gradient(circle at 94% 12%,rgba(8,145,178,.20),transparent 32%),
+    linear-gradient(135deg,#eff6ff,#f8fafc 46%,#ecfeff);
+  line-height:1.78;
+}
+body:before{
+  content:"";
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  opacity:.20;
+  background-image:
+    linear-gradient(rgba(37,99,235,.05) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(37,99,235,.05) 1px,transparent 1px);
+  background-size:30px 30px;
+}
+nav{
+  position:sticky;top:0;z-index:30;
+  background:rgba(15,23,42,.94);
+  backdrop-filter:blur(14px);
+  color:#fff;
+  border-bottom:3px solid var(--blue);
+}
+.nav-inner{
+  max-width:1200px;margin:0 auto;
+  display:flex;align-items:center;gap:8px;
+  padding:10px 18px;
+  overflow-x:auto;
+}
+.logo{font-weight:900;white-space:nowrap;letter-spacing:-.03em;margin-right:10px}
+.badge{font-size:12px;padding:3px 9px;border-radius:999px;background:var(--blue);font-weight:800;white-space:nowrap}
+nav a{color:#bfdbfe;text-decoration:none;font-size:13px;padding:7px 9px;border-radius:999px;white-space:nowrap}
+nav a:hover{background:rgba(255,255,255,.1);color:#fff}
+.wrap{max-width:1200px;margin:0 auto;padding:34px 18px 84px;position:relative}
+.hero{
+  padding:46px 36px;border-radius:32px;
+  background:linear-gradient(135deg,rgba(248,250,252,.95),rgba(239,246,255,.90));
+  box-shadow:var(--shadow);
+  border:1px solid rgba(37,99,235,.22);
+  margin-bottom:24px;
+  position:relative;overflow:hidden;
+}
+.hero:after{
+  content:"";
+  position:absolute;right:-120px;top:-120px;width:330px;height:330px;border-radius:50%;
+  background:radial-gradient(circle,rgba(37,99,235,.20),transparent 68%);
+}
+.kicker{font-size:13px;color:var(--blue);font-weight:900;letter-spacing:.14em;text-transform:uppercase}
+h1{font-size:clamp(36px,6vw,66px);line-height:1.02;margin:12px 0 14px;letter-spacing:-.065em;color:#0f172a}
+.hero p{font-size:18px;color:#475569;max-width:860px;margin:0}
+.callout{
+  margin-top:22px;border-left:5px solid var(--blue);background:rgba(37,99,235,.08);
+  padding:16px 18px;border-radius:16px;color:#1e3a8a;font-weight:800;
+}
+.section{margin-top:36px}
+.section h2{font-size:30px;margin:0 0 8px;letter-spacing:-.04em;color:#0f172a}
+.section-desc{margin:0 0 16px;color:var(--muted)}
+.grid{display:grid;grid-template-columns:repeat(12,1fr);gap:16px}
+.card{
+  grid-column:span 6;
+  background:rgba(248,250,252,.94);
+  border:1px solid rgba(148,163,184,.32);
+  border-radius:var(--radius);
+  padding:22px;
+  box-shadow:0 12px 28px rgba(15,23,42,.08);
+}
+.card.full{grid-column:span 12}
+.card.third{grid-column:span 4}
+.card.quarter{grid-column:span 3}
+h3{font-size:20px;margin:0 0 10px;color:#0f172a}
+ul{margin:8px 0;padding-left:22px}
+li{margin:5px 0}
+.small{font-size:13px;color:var(--muted)}
+.good{border-left:5px solid var(--green)}
+.warn{border-left:5px solid var(--red)}
+.blue{border-left:5px solid var(--blue)}
+.cyan{border-left:5px solid var(--cyan)}
+.amber{border-left:5px solid var(--amber)}
+.purple{border-left:5px solid var(--purple)}
+.table-wrap{overflow-x:auto;border-radius:18px;border:1px solid var(--line);background:white;margin-top:12px}
+table{width:100%;border-collapse:collapse;min-width:820px;background:white}
+th,td{padding:12px 14px;border-bottom:1px solid #e2e8f0;text-align:left;vertical-align:top;font-size:14px}
+th{background:#dbeafe;color:#1e3a8a;font-weight:900;white-space:nowrap}
+tr:last-child td{border-bottom:none}
+.code{
+  background:#0f172a;color:#dbeafe;border-radius:14px;padding:15px;overflow-x:auto;
+  font-family:"JetBrains Mono","Consolas",monospace;font-size:13px;line-height:1.7;
+}
+.flow{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:12px 0}
+.step{background:#fff;border:1px solid var(--line);border-radius:14px;padding:10px 12px;font-weight:900;color:#1e293b}
+.arrow{color:var(--blue);font-weight:900}
+.matrix{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:12px}
+.box{background:#fff;border:1px solid var(--line);border-radius:16px;padding:14px}
+.box strong{color:#0f172a}
+.checklist{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.check{background:#fff;border:1px solid var(--line);border-radius:16px;padding:14px}
+.footer{margin-top:48px;padding:18px;border-top:1px solid var(--line);color:var(--muted);font-size:13px}
+@media(max-width:900px){
+  .card,.card.third,.card.quarter{grid-column:span 12}
+  .hero{padding:30px 22px}
+  .matrix,.checklist{grid-template-columns:1fr}
+  .arrow{display:none}
+}
+@media print{
+  nav{display:none}
+  body{background:#fff}
+  body:before{display:none}
+  .hero,.card{box-shadow:none}
+}
+</style>
+</head>
+<body>
+<nav>
+  <div class="nav-inner">
+    <div class="logo">AK Creator Monetization</div>
+    <div class="badge">Profile Architecture</div>
+    <a href="#definition">定義</a>
+    <a href="#layers">五層架構</a>
+    <a href="#bio">Bio</a>
+    <a href="#pin">置頂三件套</a>
+    <a href="#highlight">Highlight</a>
+    <a href="#path">Link / DM</a>
+    <a href="#audit">Audit</a>
+    <a href="#tools">工具對接</a>
+  </div>
+</nav>
+
+<main class="wrap">
+  <section class="hero">
+    <div class="kicker">AK Red-Team Patch Manual v1.0</div>
+    <h1>Profile 不是名片，<br>是冷流量的二次審查頁。</h1>
+    <p>受眾看完 Reel / Short 後，不一定直接 DM。很多人會先點進主頁判斷：你是誰、是否可信、是否和我有關、下一步要去哪裡。</p>
+    <div class="callout">本模組是紅隊補強，不是新主線章節。它補上 Reel / Short → Profile → Bio / Pin / Highlight / Link / DM Trigger 的主頁防漏層。</div>
+  </section>
+
+  <section class="section" id="definition">
+    <h2>1. Profile Architecture 是什麼？</h2>
+    <div class="grid">
+      <div class="card good">
+        <h3>一句話定義</h3>
+        <p>Profile Architecture 是把個人主頁設計成內容流量的轉化中繼站，用 Bio、置頂內容、Highlight、連結與 DM Trigger 承接冷流量並導向低摩擦下一步。</p>
+      </div>
+      <div class="card blue">
+        <h3>紅隊問題</h3>
+        <p>如果受眾看完影片後進主頁，卻看不懂你是誰、能幫什麼、下一步去哪裡，前端所有流量都會在主頁漏掉。</p>
+      </div>
+      <div class="card full amber">
+        <h3>工具化公式</h3>
+        <div class="code">Profile Architecture =
+Bio Clarity × Pin Trust Matrix × Highlight Proof Bank × Link / DM Path × Performance Feedback</div>
+        <p class="small">此框架屬 practical_inference / first_party_framework，不是平台官方推薦規則或成交保證。</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>2. Profile 不是什麼</h2>
+    <div class="grid">
+      <div class="card warn">
+        <h3>不要把主頁做成</h3>
+        <ul>
+          <li>自我介紹頁</li>
+          <li>履歷牆</li>
+          <li>所有連結的倉庫</li>
+          <li>漂亮排版展示</li>
+          <li>平台推薦公式</li>
+          <li>成交保證頁</li>
+        </ul>
+      </div>
+      <div class="card good">
+        <h3>它真正要回答</h3>
+        <ul>
+          <li>你幫誰？</li>
+          <li>你解決什麼問題？</li>
+          <li>你為什麼可信？</li>
+          <li>有哪些證據？</li>
+          <li>我下一步去哪裡？</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>3. Profile 與 10 章主線的關係</h2>
+    <div class="flow">
+      <div class="step">Reel / Short</div><div class="arrow">→</div>
+      <div class="step">Profile</div><div class="arrow">→</div>
+      <div class="step">Bio / Pin / Highlight</div><div class="arrow">→</div>
+      <div class="step">DM / Link / Offer</div>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>模組</th><th>Profile 的接口</th></tr></thead>
+        <tbody>
+          <tr><td>Strategy</td><td>Profile 必須呈現受眾、定位、Content Pillar、Conversion Path。</td></tr>
+          <tr><td>Signal</td><td>Profile 可收集主頁訪客的問題、點擊與 DM Trigger 作為新 Signal。</td></tr>
+          <tr><td>Hook</td><td>Hook 把人帶進主頁，Profile 負責承接好奇心。</td></tr>
+          <tr><td>Script</td><td>Script 建立初步信任，Profile 延伸證據與路徑。</td></tr>
+          <tr><td>CTA</td><td>內容 CTA 與 Profile CTA 必須一致。</td></tr>
+          <tr><td>Stories</td><td>Highlight 留住 Stories 的高價值證據。</td></tr>
+          <tr><td>Conversion</td><td>Profile 導向 DM / LFA / Offer，降低轉化前疑慮。</td></tr>
+          <tr><td>Performance</td><td>Profile visits / link clicks / DM count 可用來診斷承接效果。</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="section" id="layers">
+    <h2>4. Profile 五層架構</h2>
+    <div class="grid">
+      <div class="card third blue"><h3>1 Bio Clarity</h3><p>3–4 行回答你幫誰、解決什麼、用什麼方法、下一步去哪裡。</p></div>
+      <div class="card third cyan"><h3>2 Pin Trust Matrix</h3><p>三支置頂內容分工：你是誰、你能幫什麼、下一步如何開始。</p></div>
+      <div class="card third purple"><h3>3 Highlight Proof Bank</h3><p>把 Stories 的高價值證據保存成 FAQ、案例、流程、工具、回饋。</p></div>
+      <div class="card third amber"><h3>4 Link / DM Path</h3><p>讓訪客清楚知道低摩擦下一步，不把主頁變連結倉庫。</p></div>
+      <div class="card third good"><h3>5 Performance Feedback</h3><p>用 profile visits、link clicks、DM、qualified DM 檢查漏點。</p></div>
+      <div class="card third warn"><h3>注意</h3><p>Profile 做好不保證轉化，只能降低主頁承接斷點。</p></div>
+    </div>
+  </section>
+
+  <section class="section" id="bio">
+    <h2>5. Bio Clarity</h2>
+    <p class="section-desc">Bio 不是自我介紹，而是 Strategy 的壓縮版。</p>
+    <div class="grid">
+      <div class="card blue">
+        <h3>建議格式</h3>
+        <div class="code">我幫助 [具體受眾]
+解決 [具體痛點 / 結果缺口]
+用 [方法 / 系統 / 工具 / 經驗]
+下一步：[低摩擦 CTA]</div>
+      </div>
+      <div class="card good">
+        <h3>範例</h3>
+        <div class="code">幫 AI 新手建立工具學習路線
+從工具清單 → 工作流 → 作品集
+用 AK 系統把內容變成可執行流程
+👇 領取 AI 學習路線檢查表</div>
+      </div>
+      <div class="card full warn">
+        <h3>常見錯誤</h3>
+        <ul>
+          <li>只寫頭銜。</li>
+          <li>寫太多人生理念。</li>
+          <li>沒有受眾。</li>
+          <li>沒有下一步。</li>
+          <li>CTA 和內容 CTA 不一致。</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="pin">
+    <h2>6. Pin Trust Matrix｜置頂三件套</h2>
+    <p class="section-desc">置頂內容不是放最紅影片，而是放最能讓冷流量理解你的三支內容。</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Pin</th><th>任務</th><th>對應問題</th></tr></thead>
+        <tbody>
+          <tr><td>Pin 1｜Who / Why</td><td>你是誰，為什麼做這件事</td><td>這個人和我有關嗎？</td></tr>
+          <tr><td>Pin 2｜Problem / Method</td><td>你解決什麼問題，用什麼方法</td><td>他能幫我解決什麼？</td></tr>
+          <tr><td>Pin 3｜Proof / Next Step</td><td>證據、案例、入口</td><td>我下一步去哪裡？</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="card full amber" style="margin-top:16px">
+      <h3>工具型 / 教學型替代版</h3>
+      <div class="code">Start Here
+Best Framework
+Free Resource / DM Entry</div>
+    </div>
+  </section>
+
+  <section class="section" id="highlight">
+    <h2>7. Highlight Proof Bank</h2>
+    <p class="section-desc">Stories 會消失，但 Highlight 可以保留信任證據。</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Highlight</th><th>任務</th></tr></thead>
+        <tbody>
+          <tr><td>Start Here</td><td>新訪客從哪裡開始。</td></tr>
+          <tr><td>FAQ</td><td>常見問題與疑慮。</td></tr>
+          <tr><td>Results / Case</td><td>案例與成果。</td></tr>
+          <tr><td>Process</td><td>工作流程與方法。</td></tr>
+          <tr><td>Free Tool / Resource</td><td>免費資源入口。</td></tr>
+          <tr><td>Behind</td><td>幕後與真實過程。</td></tr>
+          <tr><td>Reviews</td><td>學員 / 客戶回饋。</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="card full warn" style="margin-top:16px">
+      <h3>常見錯誤</h3>
+      <p>Highlight 過多會變雜物櫃。保留 5–7 個核心 Highlight 即可，重點不是封面漂亮，而是能回答疑慮。</p>
+    </div>
+  </section>
+
+  <section class="section" id="path">
+    <h2>8. Link / DM Path</h2>
+    <p class="section-desc">Profile 的連結與 DM Trigger 要把受眾導向低摩擦下一步。</p>
+    <div class="grid">
+      <div class="card good">
+        <h3>可用入口</h3>
+        <ul>
+          <li>DM 關鍵字</li>
+          <li>免費檢查表</li>
+          <li>模板</li>
+          <li>LINE / 社群</li>
+          <li>預約諮詢</li>
+          <li>低價產品</li>
+          <li>工具頁</li>
+          <li>等待名單</li>
+        </ul>
+      </div>
+      <div class="card blue">
+        <h3>五個原則</h3>
+        <ul>
+          <li>主入口只能有一個。</li>
+          <li>次入口可以有，但不能搶焦點。</li>
+          <li>入口要和 Strategy / Conversion Path 對齊。</li>
+          <li>不要讓冷流量看到過多選項。</li>
+          <li>Link in Bio 是轉化分流器，不是連結倉庫。</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>9. Profile Performance Feedback</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>指標現象</th><th>可能意義</th></tr></thead>
+        <tbody>
+          <tr><td>profile visits 高、DM 低</td><td>Bio / Pin / CTA 承接弱。</td></tr>
+          <tr><td>profile visits 高、link clicks 低</td><td>連結入口不明或吸引力不足。</td></tr>
+          <tr><td>link clicks 高、DM 低</td><td>landing / lead magnet / 表單斷點。</td></tr>
+          <tr><td>DM 多但品質差</td><td>CTA 吸錯人或篩選不足。</td></tr>
+          <tr><td>profile visits 低</td><td>Hook / Script 沒有足夠好奇心或信任。</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="card full good" style="margin-top:16px">
+      <h3>真正要看的是這條鏈</h3>
+      <div class="code">Profile Visit → Link Click / DM → Qualified DM → Conversion</div>
+    </div>
+  </section>
+
+  <section class="section" id="audit">
+    <h2>10. Profile Audit Checklist</h2>
+    <div class="checklist">
+      <div class="check"><h3>Bio Audit</h3><ul><li>是否明確說出服務誰？</li><li>是否說出解決什麼問題？</li><li>是否有方法 / 系統 / 角度？</li><li>是否有單一下一步？</li><li>是否和 Strategy 一致？</li></ul></div>
+      <div class="check"><h3>Pin Audit</h3><ul><li>Pin 1 是否回答你是誰？</li><li>Pin 2 是否回答你怎麼解？</li><li>Pin 3 是否回答證據 / 下一步？</li><li>三支置頂是否互補？</li><li>是否和 Conversion Path 一致？</li></ul></div>
+      <div class="check"><h3>Highlight Audit</h3><ul><li>是否有 Start Here？</li><li>是否有 FAQ？</li><li>是否有 Proof / Case？</li><li>是否有 Process？</li><li>是否刪除過期 Highlight？</li></ul></div>
+      <div class="check"><h3>Link / DM Audit</h3><ul><li>是否只有一個主入口？</li><li>主入口是否和內容 CTA 一致？</li><li>是否有低摩擦入口？</li><li>是否避免過多選項？</li><li>DM 第一問是否和入口一致？</li></ul></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>11. Profile Failure Diagnosis</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>失敗</th><th>症狀</th><th>根因</th><th>修正</th></tr></thead>
+        <tbody>
+          <tr><td>主頁訪問高但沒 DM</td><td>很多人點進來但不行動</td><td>Bio / Pin 沒有下一步</td><td>重寫 Bio + Pin 3。</td></tr>
+          <tr><td>主頁訪問高但 link clicks 低</td><td>沒人點連結</td><td>入口不明或選項太多</td><td>單一主入口。</td></tr>
+          <tr><td>DM 多但品質差</td><td>來的人不適合</td><td>Bio / CTA 沒篩選</td><td>加入 Not For / 篩選問題。</td></tr>
+          <tr><td>置頂觀看高但不轉化</td><td>置頂很熱但無承接</td><td>Pin 不是 Trust Matrix</td><td>重新分配 Pin 1 / 2 / 3。</td></tr>
+          <tr><td>Highlight 很多但無用</td><td>看起來像雜物櫃</td><td>沒有 Proof Bank 架構</td><td>重整成 5–7 個核心 Highlight。</td></tr>
+          <tr><td>Profile 和內容斷裂</td><td>點進來像不同人</td><td>Strategy / CTA / Stories 不一致</td><td>統一主線與入口。</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="section" id="tools">
+    <h2>12. 工具對接</h2>
+    <div class="grid">
+      <div class="card blue">
+        <h3>Hub</h3>
+        <p>Profile Architecture 應放在紅隊補強模組，不改 10 章主線編號。</p>
+      </div>
+      <div class="card purple">
+        <h3>Screenwriter Pro</h3>
+        <p>可加入 Profile Lite：Bio Draft、Pin 1/2/3 Plan、Highlight Plan、Primary Profile CTA、DM First Question。</p>
+      </div>
+      <div class="card amber">
+        <h3>v6.5</h3>
+        <p>不審 Profile，只接收生成任務：Bio 圖卡、Pin cover、Highlight cover、Profile visual pack。</p>
+      </div>
+      <div class="card good">
+        <h3>Performance</h3>
+        <p>增加 profile_visits、link_clicks、dm_count、qualified_dm_count、conversion_count、profile_conversion_rate。</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>13. Unsupported Claims to Avoid</h2>
+    <div class="grid">
+      <div class="card warn"><h3>Profile 做好就一定成交</h3><p>錯。Profile 只降低承接斷點，不保證成交。</p></div>
+      <div class="card warn"><h3>Bio 寫對就一定漲粉</h3><p>錯。Bio 是承接工具，不是流量保證。</p></div>
+      <div class="card warn"><h3>置頂三件套會平台加權</h3><p>錯。這是信任承接設計，不是 ranking factor。</p></div>
+      <div class="card warn"><h3>連結越多越完整</h3><p>錯。過多選項會提高決策摩擦。</p></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>14. 最終位置</h2>
+    <div class="card full good">
+      <p>Profile Architecture 是必要補強模組，不是新主線章節。正式位置建議：</p>
+      <div class="code">Strategy
+→ Profile Architecture
+→ Signal
+→ Hook
+→ Script
+→ CTA
+→ Stories
+→ Conversion
+→ Algorithm
+→ Performance
+→ Execution</div>
+    </div>
+  </section>
+
+  <div class="footer">
+    <strong>AK Profile Architecture Manual v1.0</strong><br>
+    本手冊為紅隊補強模組，目標是降低主頁承接斷點，不保證流量、漲粉、私訊或成交。
+  </div>
+</main>
+</body>
+</html>
