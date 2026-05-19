@@ -135,6 +135,35 @@ tr:last-child td{border-bottom:none}
   .hero,.card{box-shadow:none}
 }
 </style>
+
+<style>
+.glossary-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:12px;
+  margin-top:14px;
+}
+.glossary-item{
+  background:#fff;
+  border:1px solid #d6e0ee;
+  border-radius:16px;
+  padding:14px;
+}
+.glossary-item strong{
+  color:#0f172a;
+  display:block;
+  margin-bottom:4px;
+}
+.glossary-item span{
+  color:#64748b;
+  font-size:14px;
+  line-height:1.7;
+}
+@media(max-width:900px){
+  .glossary-grid{grid-template-columns:1fr}
+}
+</style>
+
 </head>
 <body>
 <nav>
@@ -143,10 +172,10 @@ tr:last-child td{border-bottom:none}
     <div class="badge">Profile Architecture</div>
     <a href="#definition">定義</a>
     <a href="#layers">五層架構</a>
-    <a href="#bio">Bio</a>
-    <a href="#pin">置頂三件套</a>
-    <a href="#highlight">Highlight</a>
-    <a href="#path">Link / DM</a>
+    <a href="#bio">個人簡介</a>
+    <a href="#pin">置頂內容</a>
+    <a href="#highlight">精選限動</a>
+    <a href="#path">連結 / 私訊</a>
     <a href="#audit">Audit</a>
     <a href="#tools">工具對接</a>
   </div>
@@ -154,11 +183,44 @@ tr:last-child td{border-bottom:none}
 
 <main class="wrap">
   <section class="hero">
-    <div class="kicker">AK Red-Team Patch Manual v1.0</div>
+    <div class="kicker">AK Red-Team Patch Manual v1.1</div>
     <h1>Profile 不是名片，<br>是冷流量的二次審查頁。</h1>
     <p>受眾看完 Reel / Short 後，不一定直接 DM。很多人會先點進主頁判斷：你是誰、是否可信、是否和我有關、下一步要去哪裡。</p>
-    <div class="callout">本模組是紅隊補強，不是新主線章節。它補上 Reel / Short → Profile → Bio / Pin / Highlight / Link / DM Trigger 的主頁防漏層。</div>
+    <div class="callout">本模組是紅隊補強，不是新主線章節。它補上 Reel / Short → Profile → 個人簡介 / 置頂內容 / 精選限動 / 個人檔案連結 / 私訊觸發句 的主頁防漏層。</div>
   </section>
+
+<section class="section" id="glossary">
+  <h2>0. 新手名詞對照表</h2>
+  <p class="section-desc">本手冊採「中文意思優先，英文術語放括號」。先理解功能，再記英文。</p>
+  <div class="glossary-grid">
+    <div class="glossary-item">
+      <strong>個人簡介（Bio）</strong>
+      <span>主頁上方那幾行文字。它不是自我介紹，而是要讓新訪客快速知道：你幫誰、解決什麼、下一步去哪裡。</span>
+    </div>
+    <div class="glossary-item">
+      <strong>置頂內容（Pin / Pin Reels / Pin Posts）</strong>
+      <span>固定在主頁最上方的 3 則內容。不是放最紅的，而是放最能讓陌生人理解你、信任你、知道下一步的內容。</span>
+    </div>
+    <div class="glossary-item">
+      <strong>精選限動（Highlight）</strong>
+      <span>IG 主頁上可以長期保存的限動分類。用來保存 FAQ、案例、流程、學員回饋、免費資源，不讓高價值限動 24 小時後消失。</span>
+    </div>
+    <div class="glossary-item">
+      <strong>個人檔案連結（Link in Bio）</strong>
+      <span>主頁可點擊的連結。它不是連結倉庫，而是把人導向最重要的下一步，例如檢查表、LINE、工具頁或預約表單。</span>
+    </div>
+    <div class="glossary-item">
+      <strong>私訊觸發句（DM Trigger）</strong>
+      <span>引導對方私訊你的句子或關鍵字。例如：「回覆『路線』我給你 AI 學習檢查表」。重點是自然、低壓、不要互動誘餌。</span>
+    </div>
+    <div class="glossary-item">
+      <strong>主頁防漏</strong>
+      <span>意思是：受眾點進主頁後，不要因為看不懂你是誰、沒有信任證據、找不到下一步而離開。</span>
+    </div>
+  </div>
+</section>
+
+
 
   <section class="section" id="definition">
     <h2>1. Profile Architecture 是什麼？</h2>
@@ -174,7 +236,7 @@ tr:last-child td{border-bottom:none}
       <div class="card full amber">
         <h3>工具化公式</h3>
         <div class="code">Profile Architecture =
-Bio Clarity × Pin Trust Matrix × Highlight Proof Bank × Link / DM Path × Performance Feedback</div>
+個人簡介清晰度（Bio Clarity） × 置頂內容信任矩陣（Pin Trust Matrix） × 精選限動證據庫（Highlight Proof Bank） × 個人檔案連結 / 私訊路徑（Link / DM Path） × 成效回收檢查（Performance Feedback）</div>
         <p class="small">此框架屬 practical_inference / first_party_framework，不是平台官方推薦規則或成交保證。</p>
       </div>
     </div>
@@ -212,7 +274,7 @@ Bio Clarity × Pin Trust Matrix × Highlight Proof Bank × Link / DM Path × Per
     <div class="flow">
       <div class="step">Reel / Short</div><div class="arrow">→</div>
       <div class="step">Profile</div><div class="arrow">→</div>
-      <div class="step">Bio / Pin / Highlight</div><div class="arrow">→</div>
+      <div class="step">個人簡介 / 置頂內容 / 精選限動</div><div class="arrow">→</div>
       <div class="step">DM / Link / Offer</div>
     </div>
     <div class="table-wrap">
@@ -235,17 +297,17 @@ Bio Clarity × Pin Trust Matrix × Highlight Proof Bank × Link / DM Path × Per
   <section class="section" id="layers">
     <h2>4. Profile 五層架構</h2>
     <div class="grid">
-      <div class="card third blue"><h3>1 Bio Clarity</h3><p>3–4 行回答你幫誰、解決什麼、用什麼方法、下一步去哪裡。</p></div>
-      <div class="card third cyan"><h3>2 Pin Trust Matrix</h3><p>三支置頂內容分工：你是誰、你能幫什麼、下一步如何開始。</p></div>
-      <div class="card third purple"><h3>3 Highlight Proof Bank</h3><p>把 Stories 的高價值證據保存成 FAQ、案例、流程、工具、回饋。</p></div>
-      <div class="card third amber"><h3>4 Link / DM Path</h3><p>讓訪客清楚知道低摩擦下一步，不把主頁變連結倉庫。</p></div>
-      <div class="card third good"><h3>5 Performance Feedback</h3><p>用 profile visits、link clicks、DM、qualified DM 檢查漏點。</p></div>
+      <div class="card third blue"><h3>1 個人簡介清晰度（Bio Clarity）</h3><p>3–4 行回答你幫誰、解決什麼、用什麼方法、下一步去哪裡。</p></div>
+      <div class="card third cyan"><h3>2 置頂內容信任矩陣（Pin Trust Matrix）</h3><p>三支置頂內容分工：你是誰、你能幫什麼、下一步如何開始。</p></div>
+      <div class="card third purple"><h3>3 精選限動證據庫（Highlight Proof Bank）</h3><p>把 Stories 的高價值證據保存成 FAQ、案例、流程、工具、回饋。</p></div>
+      <div class="card third amber"><h3>4 個人檔案連結 / 私訊路徑（Link / DM Path）</h3><p>讓訪客清楚知道低摩擦下一步，不把主頁變連結倉庫。</p></div>
+      <div class="card third good"><h3>5 成效回收檢查（Performance Feedback）</h3><p>用 profile visits、link clicks、DM、qualified DM 檢查漏點。</p></div>
       <div class="card third warn"><h3>注意</h3><p>Profile 做好不保證轉化，只能降低主頁承接斷點。</p></div>
     </div>
   </section>
 
   <section class="section" id="bio">
-    <h2>5. Bio Clarity</h2>
+    <h2>5. 個人簡介清晰度（Bio Clarity）</h2>
     <p class="section-desc">Bio 不是自我介紹，而是 Strategy 的壓縮版。</p>
     <div class="grid">
       <div class="card blue">
@@ -276,7 +338,7 @@ Bio Clarity × Pin Trust Matrix × Highlight Proof Bank × Link / DM Path × Per
   </section>
 
   <section class="section" id="pin">
-    <h2>6. Pin Trust Matrix｜置頂三件套</h2>
+    <h2>6. 置頂內容信任矩陣（Pin Trust Matrix）｜置頂三件套</h2>
     <p class="section-desc">置頂內容不是放最紅影片，而是放最能讓冷流量理解你的三支內容。</p>
     <div class="table-wrap">
       <table>
@@ -297,7 +359,7 @@ Free Resource / DM Entry</div>
   </section>
 
   <section class="section" id="highlight">
-    <h2>7. Highlight Proof Bank</h2>
+    <h2>7. 精選限動證據庫（Highlight Proof Bank）</h2>
     <p class="section-desc">Stories 會消失，但 Highlight 可以保留信任證據。</p>
     <div class="table-wrap">
       <table>
@@ -320,7 +382,7 @@ Free Resource / DM Entry</div>
   </section>
 
   <section class="section" id="path">
-    <h2>8. Link / DM Path</h2>
+    <h2>8. 個人檔案連結 / 私訊路徑（Link / DM Path）</h2>
     <p class="section-desc">Profile 的連結與 DM Trigger 要把受眾導向低摩擦下一步。</p>
     <div class="grid">
       <div class="card good">
@@ -350,7 +412,7 @@ Free Resource / DM Entry</div>
   </section>
 
   <section class="section">
-    <h2>9. Profile Performance Feedback</h2>
+    <h2>9. Profile 成效回收檢查（Performance Feedback）</h2>
     <div class="table-wrap">
       <table>
         <thead><tr><th>指標現象</th><th>可能意義</th></tr></thead>
@@ -372,10 +434,10 @@ Free Resource / DM Entry</div>
   <section class="section" id="audit">
     <h2>10. Profile Audit Checklist</h2>
     <div class="checklist">
-      <div class="check"><h3>Bio Audit</h3><ul><li>是否明確說出服務誰？</li><li>是否說出解決什麼問題？</li><li>是否有方法 / 系統 / 角度？</li><li>是否有單一下一步？</li><li>是否和 Strategy 一致？</li></ul></div>
-      <div class="check"><h3>Pin Audit</h3><ul><li>Pin 1 是否回答你是誰？</li><li>Pin 2 是否回答你怎麼解？</li><li>Pin 3 是否回答證據 / 下一步？</li><li>三支置頂是否互補？</li><li>是否和 Conversion Path 一致？</li></ul></div>
-      <div class="check"><h3>Highlight Audit</h3><ul><li>是否有 Start Here？</li><li>是否有 FAQ？</li><li>是否有 Proof / Case？</li><li>是否有 Process？</li><li>是否刪除過期 Highlight？</li></ul></div>
-      <div class="check"><h3>Link / DM Audit</h3><ul><li>是否只有一個主入口？</li><li>主入口是否和內容 CTA 一致？</li><li>是否有低摩擦入口？</li><li>是否避免過多選項？</li><li>DM 第一問是否和入口一致？</li></ul></div>
+      <div class="check"><h3>個人簡介檢查（Bio Audit）</h3><ul><li>是否明確說出服務誰？</li><li>是否說出解決什麼問題？</li><li>是否有方法 / 系統 / 角度？</li><li>是否有單一下一步？</li><li>是否和 Strategy 一致？</li></ul></div>
+      <div class="check"><h3>置頂內容檢查（Pin Audit）</h3><ul><li>Pin 1 是否回答你是誰？</li><li>Pin 2 是否回答你怎麼解？</li><li>Pin 3 是否回答證據 / 下一步？</li><li>三支置頂是否互補？</li><li>是否和 Conversion Path 一致？</li></ul></div>
+      <div class="check"><h3>精選限動檢查（Highlight Audit）</h3><ul><li>是否有 Start Here？</li><li>是否有 FAQ？</li><li>是否有 Proof / Case？</li><li>是否有 Process？</li><li>是否刪除過期 Highlight？</li></ul></div>
+      <div class="check"><h3>連結 / 私訊路徑檢查（Link / DM Audit）</h3><ul><li>是否只有一個主入口？</li><li>主入口是否和內容 CTA 一致？</li><li>是否有低摩擦入口？</li><li>是否避免過多選項？</li><li>DM 第一問是否和入口一致？</li></ul></div>
     </div>
   </section>
 
@@ -405,7 +467,7 @@ Free Resource / DM Entry</div>
       </div>
       <div class="card purple">
         <h3>Screenwriter Pro</h3>
-        <p>可加入 Profile Lite：Bio Draft、Pin 1/2/3 Plan、Highlight Plan、Primary Profile CTA、DM First Question。</p>
+        <p>可加入 Profile Lite：個人簡介草稿（Bio Draft）、Pin 1/2/3 Plan、精選限動規劃（Highlight Plan）、主頁主要行動指令（Primary Profile CTA）、私訊第一問（DM First Question）。</p>
       </div>
       <div class="card amber">
         <h3>v6.5</h3>
@@ -447,7 +509,7 @@ Free Resource / DM Entry</div>
   </section>
 
   <div class="footer">
-    <strong>AK Profile Architecture Manual v1.0</strong><br>
+    <strong>AK Profile Architecture Manual v1.1</strong><br>
     本手冊為紅隊補強模組，目標是降低主頁承接斷點，不保證流量、漲粉、私訊或成交。
   </div>
 </main>
